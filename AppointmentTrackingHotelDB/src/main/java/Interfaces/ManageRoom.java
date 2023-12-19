@@ -29,12 +29,10 @@ public class ManageRoom extends javax.swing.JFrame {
         initComponents();
     }
 
-    // Helper method to refresh the room list in the table
     private void refreshRoomList() {
         DefaultTableModel model = (DefaultTableModel) tblManageRoom.getModel();
-        model.setRowCount(0); // Clear the table content
-
-        // Retrieve the updated room list from the database
+        model.setRowCount(0); 
+        
         ResultSet rs = Select.getData("SELECT * FROM room");
 
         try {
@@ -79,7 +77,6 @@ public class ManageRoom extends javax.swing.JFrame {
         rtbAc = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         btnDeleteRoom = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(50, 118));
@@ -89,15 +86,20 @@ public class ManageRoom extends javax.swing.JFrame {
                 formComponentShown(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Manage Room");
+        jLabel1.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\manage room.png")); // NOI18N
+        jLabel1.setText("Manage Rooms");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 25, -1, -1));
 
-        btnClose.setText("Close");
+        btnClose.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\close.png")); // NOI18N
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
             }
         });
+        getContentPane().add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 33, -1, -1));
 
         tblManageRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -109,122 +111,61 @@ public class ManageRoom extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblManageRoom);
 
-        jLabel2.setText("Room Number");
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 112, 553, -1));
 
+        jLabel2.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        jLabel2.setText("Room Number");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 112, -1, -1));
+        getContentPane().add(txtRoomNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 149, 197, -1));
+
+        jLabel3.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel3.setText("Room Type");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 189, -1, -1));
 
         cmbBed.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double", "Triple" }));
+        getContentPane().add(cmbBed, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 303, 197, -1));
 
         jLabel4.setText("Bed");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 269, -1, -1));
 
+        jLabel5.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel5.setText("Price");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 370, -1, -1));
 
         txtPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPriceActionPerformed(evt);
             }
         });
+        getContentPane().add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 400, 197, -1));
 
+        btnAddRoom.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         btnAddRoom.setText("Addd Room");
         btnAddRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddRoomActionPerformed(evt);
             }
         });
+        getContentPane().add(btnAddRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 470, -1, -1));
 
         buttonGroup1.add(rtbAc);
+        rtbAc.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         rtbAc.setText("AC");
+        getContentPane().add(rtbAc, new org.netbeans.lib.awtextra.AbsoluteConstraints(655, 226, -1, -1));
 
         buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jRadioButton2.setText("Non-AC");
+        getContentPane().add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(738, 226, -1, -1));
 
+        btnDeleteRoom.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         btnDeleteRoom.setText("Delete Room");
         btnDeleteRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteRoomActionPerformed(evt);
             }
         });
-
-        btnEdit.setText("Edit");
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnClose)
-                .addGap(29, 29, 29))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2)
-                        .addComponent(txtRoomNumber)
-                        .addComponent(jLabel3)
-                        .addComponent(cmbBed, 0, 197, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)
-                        .addComponent(txtPrice))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAddRoom)
-                        .addGap(78, 78, 78)
-                        .addComponent(btnDeleteRoom))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(rtbAc)
-                        .addGap(40, 40, 40)
-                        .addComponent(jRadioButton2)))
-                .addContainerGap(75, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEdit)
-                .addGap(184, 184, 184))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnClose))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rtbAc)
-                            .addComponent(jRadioButton2))
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbBed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAddRoom)
-                            .addComponent(btnDeleteRoom)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnEdit)
-                .addContainerGap(69, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnDeleteRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 470, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -236,19 +177,18 @@ public class ManageRoom extends javax.swing.JFrame {
 
     private void btnAddRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRoomActionPerformed
         // TODO add your handling code here:
-        // Get the values from the input fields
         String roomNo = txtRoomNumber.getText().trim();
         String roomType = rtbAc.isSelected() ? "AC" : "Non-AC";
         String bed = (String) cmbBed.getSelectedItem();
         String price = txtPrice.getText().trim();
 
-        // Validate the input fields
+        
         if (roomNo.isEmpty() || roomType.isEmpty() || bed.isEmpty() || price.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill in all the fields.");
             return;
         }
 
-        // Validate room number format (integer)
+       
         try {
             int roomNumber = Integer.parseInt(roomNo);
         } catch (NumberFormatException e) {
@@ -256,44 +196,44 @@ public class ManageRoom extends javax.swing.JFrame {
             return;
         }
 
-        // Validate price format (double)
+        
         try {
-            double roomPrice = Double.parseDouble(price);
+            int roomPrice = Integer.parseInt(price);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid price. Please enter a valid number.");
             return;
         }
 
-        // Check if the room number is already in use
+        
         if (isRoomNumberExists(roomNo)) {
             JOptionPane.showMessageDialog(null, "Room number already exists. Please enter a different room number.");
             return;
         }
 
-        // Construct the INSERT query
-        String query = "INSERT INTO room (ROOMNO, ROOMTYPE, bed, price, status) VALUES (?, ?, ?, ?, 'Available')";
+        
+        String query = "INSERT INTO ROOM (roomNo, roomType, bed, price, status) VALUES (?, ?, ?, ?, 'Available')";
 
         try ( Connection con = ConnectionProvider.getCon();  PreparedStatement pstmt = con.prepareStatement(query)) {
 
-            // Set the parameter values in the query
+           
             pstmt.setString(1, roomNo);
             pstmt.setString(2, roomType);
             pstmt.setString(3, bed);
-            pstmt.setString(4, price);
+            pstmt.setInt(4, Integer.parseInt(price));
 
-            // Execute the INSERT query
+            
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Room added successfully.");
 
-                // Clear the input fields
+                
                 txtRoomNumber.setText("");
                 rtbAc.setSelected(true);
                 cmbBed.setSelectedIndex(0);
                 txtPrice.setText("");
 
-                // Refresh the room list in the table
+                
                 refreshRoomList();
             } else {
                 JOptionPane.showMessageDialog(null, "Failed to add room.");
@@ -304,10 +244,9 @@ public class ManageRoom extends javax.swing.JFrame {
     }
 
     private boolean isRoomNumberExists(String roomNo) {
-        String query = "SELECT COUNT(*) FROM room WHERE ROOMNO = ?";
+        String query = "SELECT COUNT(*) FROM ROOM WHERE roomNo = ?";
 
         try ( Connection con = ConnectionProvider.getCon();  PreparedStatement pstmt = con.prepareStatement(query)) {
-
             pstmt.setString(1, roomNo);
             ResultSet rs = pstmt.executeQuery();
 
@@ -320,8 +259,6 @@ public class ManageRoom extends javax.swing.JFrame {
         }
 
         return false;
-
-
     }//GEN-LAST:event_btnAddRoomActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -341,7 +278,6 @@ public class ManageRoom extends javax.swing.JFrame {
 
     private void btnDeleteRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRoomActionPerformed
         // TODO add your handling code here:
-        // Get the selected row from the table
         int selectedRow = tblManageRoom.getSelectedRow();
 
         if (selectedRow == -1) {
@@ -349,31 +285,28 @@ public class ManageRoom extends javax.swing.JFrame {
             return;
         }
 
-        // Get the room number and status from the selected row
         String roomNo = tblManageRoom.getValueAt(selectedRow, 0).toString();
         String status = tblManageRoom.getValueAt(selectedRow, 4).toString();
 
-        // Check if the room is available for deletion
         if (status.equals("Available")) {
-            // Confirm the deletion with the user
+            
             int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete room " + roomNo + "?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
             if (choice == JOptionPane.YES_OPTION) {
-                // Construct the DELETE query
-                String query = "DELETE FROM room WHERE ROOMNO = ?";
+                
+                String query = "DELETE FROM ROOM WHERE roomNo = ?";
 
                 try ( Connection con = ConnectionProvider.getCon();  PreparedStatement pstmt = con.prepareStatement(query)) {
-
-                    // Set the room number parameter in the query
+                  
                     pstmt.setString(1, roomNo);
 
-                    // Execute the DELETE query
+                    
                     int rowsAffected = pstmt.executeUpdate();
 
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Room deleted successfully.");
 
-                        // Refresh the room list in the table
+                        
                         refreshRoomList();
                     } else {
                         JOptionPane.showMessageDialog(null, "Failed to delete room.");
@@ -386,95 +319,6 @@ public class ManageRoom extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cannot delete room. It is currently unavailable.");
         }
     }//GEN-LAST:event_btnDeleteRoomActionPerformed
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
-        // Get the selected row from the table
-        int selectedRow = tblManageRoom.getSelectedRow();
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Please select a room to edit.");
-            return;
-        }
-
-        // Get the existing room details from the selected row
-        String existingRoomNo = tblManageRoom.getValueAt(selectedRow, 0).toString();
-        String existingRoomType = tblManageRoom.getValueAt(selectedRow, 1).toString();
-        String existingBed = tblManageRoom.getValueAt(selectedRow, 2).toString();
-        String existingPrice = tblManageRoom.getValueAt(selectedRow, 3).toString();
-
-        // Show a dialog to edit the room details
-        RoomEditDialog editDialog = new RoomEditDialog(this, true);
-        editDialog.setRoomDetails(existingRoomNo, existingRoomType, existingBed, existingPrice);
-        editDialog.setVisible(true);
-
-        // Check if the dialog was closed by clicking the "Save" button
-        if (editDialog.isSaveButtonClicked()) {
-            // Retrieve the modified room details from the dialog
-            String modifiedRoomNo = editDialog.getRoomNumber();
-            String modifiedRoomType = editDialog.getRoomType();
-            String modifiedBed = editDialog.getBedType();
-            String modifiedPrice = editDialog.getPrice();
-
-            // Validate the modified room details
-            if (modifiedRoomNo.isEmpty() || modifiedRoomType.isEmpty() || modifiedBed.isEmpty() || modifiedPrice.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please fill in all the fields.");
-                return;
-            }
-
-            // Validate modified room number format (integer)
-            try {
-                int roomNumber = Integer.parseInt(modifiedRoomNo);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Invalid room number. Please enter a valid integer.");
-                return;
-            }
-
-            // Validate modified price format (double)
-            try {
-                double roomPrice = Double.parseDouble(modifiedPrice);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Invalid price. Please enter a valid number.");
-                return;
-            }
-
-            // Check if the modified room number already exists
-            if (!modifiedRoomNo.equals(existingRoomNo) && isRoomNumberExists(modifiedRoomNo)) {
-                JOptionPane.showMessageDialog(null, "Room number already exists. Please enter a different room number.");
-                return;
-            }
-
-            // Construct the UPDATE query
-            String query = "UPDATE room SET ROOMNO = ?, ROOMTYPE = ?, BED = ?, PRICE = ? WHERE ROOMNO = ?";
-            
-            modifiedRoomNo=(String)tblManageRoom.getValueAt(tblManageRoom.getSelectedRow(),0);
-            modifiedRoomType=(String)tblManageRoom.getValueAt(tblManageRoom.getSelectedRow(),0);
-
-            try ( Connection con = ConnectionProvider.getCon();  PreparedStatement pstmt = con.prepareStatement(query)) {
-
-                // Set the parameter values in the query
-                pstmt.setString(1, modifiedRoomNo);
-                pstmt.setString(2, modifiedRoomType);
-                pstmt.setString(3, modifiedBed);
-                pstmt.setString(4, modifiedPrice);
-                pstmt.setString(5, existingRoomNo);
-
-                // Execute the UPDATE query
-                int rowsAffected = pstmt.executeUpdate();
-
-                if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(null, "Room updated successfully.");
-
-                    // Refresh the room list in the table
-                    refreshRoomList();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to update room.");
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-    }//GEN-LAST:event_btnEditActionPerformed
 
     private void txtPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPriceActionPerformed
         // TODO add your handling code here:
@@ -527,7 +371,6 @@ public class ManageRoom extends javax.swing.JFrame {
     private javax.swing.JButton btnAddRoom;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDeleteRoom;
-    private javax.swing.JButton btnEdit;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cmbBed;

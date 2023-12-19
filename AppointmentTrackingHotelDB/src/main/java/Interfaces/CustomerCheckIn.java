@@ -29,30 +29,71 @@ public class CustomerCheckIn extends javax.swing.JFrame {
      */
     public CustomerCheckIn() {
         initComponents();
-        txtCheckInDate.setEditable(false);
         txtPrice.setEditable(false);
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/YYYY");
         Calendar cal = Calendar.getInstance();
-        txtCheckInDate.setText(myFormat.format(cal.getTime()));
+        txtCheckInDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+
     }
 
-    String bed;
-    String roomType;
     String roomNo;
-    String price;
 
-    public void roomDetails() {
+    private void roomDetails() {
         cmbRoomNumber.removeAllItems();
         txtPrice.setText("");
-        bed = (String) cmbBed.getSelectedItem();
-        roomType = (String) cmbRoomType.getSelectedItem();
+        String bed = (String) cmbBed.getSelectedItem();
+        String roomType = (String) cmbRoomType.getSelectedItem();
 
-        try {
-            ResultSet rs = Select.getData("SELECT * FROM ROOM WHERE BED ='" + bed + "'AND ROOMTYPE = '" + roomType + "'AND STATUS = 'Available'");
+        try ( Connection con = ConnectionProvider.getCon();  Statement stmt = con.createStatement()) {
+            String query = "SELECT * FROM ROOM WHERE BED ='" + bed + "'AND ROOMTYPE = '" + roomType + "'AND STATUS = 'Available'";
+            ResultSet rs = stmt.executeQuery(query);
+
             while (rs.next()) {
-                cmbRoomNumber.addItem(rs.getString(1));
+                cmbRoomNumber.addItem(rs.getString("ROOMNO"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void searchCustomerByName(String name) {
+        DefaultTableModel model = (DefaultTableModel) tblCheckIn.getModel();
+        model.setRowCount(0); // Clear the existing rows
+
+        String query = "SELECT * FROM CUSTOMER WHERE LOWER(name) LIKE LOWER('%" + name + "%')";
+
+        try ( Connection con = ConnectionProvider.getCon();  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                int customerId = rs.getInt("id");
+                String customerName = rs.getString("name");
+                String passport = rs.getString("passport");
+                String nationality = rs.getString("nationality");
+                String gender = rs.getString("gender");
+                String email = rs.getString("email");
+                String mobileNumber = rs.getString("mobileNumber");
+                String address = rs.getString("address");
+
+                model.addRow(new Object[]{customerId, customerName, passport, nationality, gender, email, mobileNumber, address});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void refreshCustomerList() {
+        DefaultTableModel model = (DefaultTableModel) tblCheckIn.getModel();
+        model.setRowCount(0); // Clear the existing rows
+
+        String query = "SELECT * FROM CUSTOMER";
+
+        try ( Connection con = ConnectionProvider.getCon();  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                int customerId = rs.getInt("ID");
+                String name = rs.getString("NAME");
+                // Retrieve other customer details
+
+                model.addRow(new Object[]{customerId, name});
+            }
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
@@ -69,70 +110,57 @@ public class CustomerCheckIn extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         btnReserveRoom = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
-        txtName = new javax.swing.JTextField();
-        txtMobileNumber = new javax.swing.JTextField();
-        txtNationality = new javax.swing.JTextField();
-        txtEmail = new javax.swing.JTextField();
-        txtPassportNumber = new javax.swing.JTextField();
-        txtAddress = new javax.swing.JTextField();
-        txtCheckInDate = new javax.swing.JTextField();
         cmbBed = new javax.swing.JComboBox<>();
         cmbRoomNumber = new javax.swing.JComboBox<>();
         txtPrice = new javax.swing.JTextField();
         cmbRoomType = new javax.swing.JComboBox<>();
-        cmbGender = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCheckIn = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        txtCheckInDate = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(50, 118));
         setUndecorated(true);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
+        jLabel1.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\check-in.png")); // NOI18N
         jLabel1.setText("Customer Check In");
 
-        btnClose.setText("Close");
+        btnClose.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\close.png")); // NOI18N
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Name");
-
-        jLabel3.setText("Mobile Number");
-
-        jLabel4.setText("Nationality");
-
-        jLabel5.setText("Gender");
-
-        jLabel6.setText("Email");
-
-        jLabel7.setText("Passport Number");
-
-        jLabel8.setText("Adress");
-
-        jLabel9.setText("Check In Date (Today)");
-
+        jLabel10.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel10.setText("Bed");
 
+        jLabel11.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel11.setText("Room Type");
 
+        jLabel12.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel12.setText("Room Number");
 
+        jLabel13.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel13.setText("Price");
 
+        btnReserveRoom.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         btnReserveRoom.setText("Reserve Room");
         btnReserveRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,22 +168,11 @@ public class CustomerCheckIn extends javax.swing.JFrame {
             }
         });
 
+        btnClear.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         btnClear.setText("Clear");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
-            }
-        });
-
-        txtName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameActionPerformed(evt);
-            }
-        });
-
-        txtPassportNumber.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPassportNumberActionPerformed(evt);
             }
         });
 
@@ -179,123 +196,121 @@ public class CustomerCheckIn extends javax.swing.JFrame {
             }
         });
 
-        cmbGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        jLabel14.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        jLabel14.setText("Search for Customer");
+
+        btnSearch.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        tblCheckIn.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Passport", "Nationality", "Gender", "Email", "Mobile Number", "Address"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCheckIn);
+
+        jLabel2.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        jLabel2.setText("Check-In Date");
+
+        txtCheckInDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCheckInDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(204, 204, 204))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5))
-                            .addGap(71, 71, 71)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtMobileNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNationality, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cmbGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(151, 151, 151)
+                .addComponent(jLabel14)
+                .addGap(47, 47, 47)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnSearch)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtPassportNumber)
-                                .addComponent(jLabel8)
-                                .addComponent(jLabel7)
-                                .addComponent(txtAddress)
-                                .addComponent(txtCheckInDate, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
-                        .addGap(183, 183, 183)
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClose))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 988, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnReserveRoom)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnClear))
                             .addComponent(cmbBed, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtPrice)
                             .addComponent(cmbRoomNumber, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbRoomType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(146, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClose)
-                        .addGap(22, 22, 22))))
+                            .addComponent(cmbRoomType, 0, 230, Short.MAX_VALUE)
+                            .addComponent(txtCheckInDate))))
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnClose)
-                    .addComponent(jLabel1))
-                .addGap(74, 74, 74)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel10))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassportNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbBed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel11))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMobileNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel12))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNationality, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCheckInDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmbRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCheckInDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbBed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel11)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel12)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnReserveRoom)
-                                    .addComponent(btnClear)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnReserveRoom)
+                                .addComponent(btnClear))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(76, 76, 76)))))
-                .addContainerGap(103, Short.MAX_VALUE))
+                                .addGap(76, 76, 76))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(btnClose))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSearch)))
+                        .addGap(55, 55, 55)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -303,43 +318,50 @@ public class CustomerCheckIn extends javax.swing.JFrame {
 
     private void btnReserveRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReserveRoomActionPerformed
         // TODO add your handling code here:
-        int id = 1;
-        String name = txtName.getText();
-        String mobileNumber = txtMobileNumber.getText();
-        String nationality = txtNationality.getText();
-        String gender = (String) cmbGender.getSelectedItem();
-        String email = txtEmail.getText();
-        String passport = txtPassportNumber.getText();
-        String address = txtAddress.getText();
-        String CheckIN = txtCheckInDate.getText();
+        int selectedRow = tblCheckIn.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a customer.");
+            return;
+        }
+
+        // Get the customer ID and name from the selected row
+        int customerId = Integer.parseInt(tblCheckIn.getValueAt(selectedRow, 0).toString());
+        String customerName = tblCheckIn.getValueAt(selectedRow, 1).toString();
+
+        String checkIn = txtCheckInDate.getText();
         String bed = (String) cmbBed.getSelectedItem();
         String roomType = (String) cmbRoomType.getSelectedItem();
         String roomNo = (String) cmbRoomNumber.getSelectedItem();
         String price = txtPrice.getText();
-        String Query = "SELECT MAX(ID) FROM CUSTOMER ";
+        String query = "INSERT INTO APPOINTMENT (customerName, roomNo, checkIn, pricePerDay) VALUES (?, ?, ?, ?)";
 
-        try {
-            ResultSet rs = Select.getData(Query);
-            while (rs.next()) {
-                id = rs.getInt(1);
-            }
-            id += 1;
+        try ( Connection con = ConnectionProvider.getCon();  PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, customerName);
+            pstmt.setString(2, roomNo);
+            pstmt.setString(3, checkIn);
+            pstmt.setString(4, price);
 
-            if (!price.equals("")) {
-                Query = "UPDATE ROOM SET STATUS = 'Unavailable' WHERE ROOMNO = '" + roomNo + "'";
-                InsertUpdateDelete.setData(Query, "");
-                Query = "INSERT INTO CUSTOMER (id, name, mobileNumber, nationality, gender, email, passport, address, checkIn, roomNo, bed, roomType, pricePerDay) VALUES (" + id + ",'" + name + "','" + mobileNumber + "','" + nationality + "','" + gender + "','" + email + "','" + passport + "','" + address + "','" + CheckIN + "','" + roomNo + "','" + bed + "','" + roomType + "'," + price + ")";                InsertUpdateDelete.setData(Query, "Customer Check-In Successfully");
-                setVisible(false);
-                new CustomerCheckIn().setVisible(true);
+            pstmt.executeUpdate();
+
+            // Update the room status to 'Unavailable'
+            query = "UPDATE ROOM SET STATUS = 'Unavailable' WHERE ROOMNO = ?";
+            try ( PreparedStatement updateStmt = con.prepareStatement(query)) {
+                updateStmt.setString(1, roomNo);
+                updateStmt.executeUpdate();
             }
-        } catch (Exception e) {
+
+            // Refresh the table and room details
+            refreshCustomerList();
+            roomDetails();
+
+            setVisible(false);
+            new CustomerCheckIn().setVisible(true);
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-    }//GEN-LAST:event_btnReserveRoomActionPerformed
 
-    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameActionPerformed
+    }//GEN-LAST:event_btnReserveRoomActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
@@ -376,9 +398,47 @@ public class CustomerCheckIn extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbRoomNumberActionPerformed
 
-    private void txtPassportNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassportNumberActionPerformed
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPassportNumberActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblCheckIn.getModel();
+        model.setRowCount(0); // Clear the existing rows
+
+        String query = "SELECT * FROM CUSTOMER";
+
+        try ( Connection con = ConnectionProvider.getCon();  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                int customerId = rs.getInt("id");
+                String name = rs.getString("name");
+                String passport = rs.getString("passport");
+                String nationality = rs.getString("nationality");
+                String gender = rs.getString("gender");
+                String email = rs.getString("email");
+                String mobileNumber = rs.getString("mobileNumber");
+                String address = rs.getString("address");
+
+                model.addRow(new Object[]{customerId, name, passport, nationality, gender, email, mobileNumber, address});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String searchQuery = txtSearch.getText().trim();
+
+        if (searchQuery.isEmpty()) {
+            // Clear the search query and refresh the table
+            refreshCustomerList();
+        } else {
+            // Search for the customer by name and refresh the table with the search results
+            searchCustomerByName(searchQuery);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtCheckInDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCheckInDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCheckInDateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,9 +479,9 @@ public class CustomerCheckIn extends javax.swing.JFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnReserveRoom;
+    private javax.swing.JButton btnSearch;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cmbBed;
-    private javax.swing.JComboBox<String> cmbGender;
     private javax.swing.JComboBox<String> cmbRoomNumber;
     private javax.swing.JComboBox<String> cmbRoomType;
     private javax.swing.JLabel jLabel1;
@@ -429,21 +489,12 @@ public class CustomerCheckIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField txtAddress;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblCheckIn;
     private javax.swing.JTextField txtCheckInDate;
-    private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtMobileNumber;
-    private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtNationality;
-    private javax.swing.JTextField txtPassportNumber;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

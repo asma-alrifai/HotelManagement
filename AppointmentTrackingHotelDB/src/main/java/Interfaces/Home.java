@@ -36,81 +36,72 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
         btnManageRoom = new javax.swing.JButton();
         btnCustomerCheckIn = new javax.swing.JButton();
         btnCustomerCheckOut = new javax.swing.JButton();
-        btnCustomerDetailsBill = new javax.swing.JButton();
+        btnManageCustomer = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\background .jpg")); // NOI18N
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(150, 118));
         setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnExit.setText("Exit");
+        btnExit.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\close.png")); // NOI18N
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
             }
         });
+        getContentPane().add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(829, 34, -1, -1));
 
-        btnManageRoom.setText("Manage Room");
+        btnManageRoom.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        btnManageRoom.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\manage room.png")); // NOI18N
+        btnManageRoom.setText("Manage Rooms");
         btnManageRoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnManageRoomActionPerformed(evt);
             }
         });
+        getContentPane().add(btnManageRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 183, 219, 78));
 
-        btnCustomerCheckIn.setText("Customer Chech In");
+        btnCustomerCheckIn.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        btnCustomerCheckIn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\check-in.png")); // NOI18N
+        btnCustomerCheckIn.setText("Customer Check In");
         btnCustomerCheckIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCustomerCheckInActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCustomerCheckIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 354, -1, -1));
 
+        btnCustomerCheckOut.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        btnCustomerCheckOut.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\check-out.png")); // NOI18N
         btnCustomerCheckOut.setText("Customer Check Out");
         btnCustomerCheckOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCustomerCheckOutActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCustomerCheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 354, -1, -1));
 
-        btnCustomerDetailsBill.setText("Customer Details Bill");
+        btnManageCustomer.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
+        btnManageCustomer.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\customer.png")); // NOI18N
+        btnManageCustomer.setText("Manage Customers");
+        btnManageCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageCustomerActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnManageCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 183, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnExit)
-                .addGap(78, 78, 78))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addComponent(btnManageRoom)
-                        .addGap(111, 111, 111)
-                        .addComponent(btnCustomerCheckIn)
-                        .addGap(126, 126, 126)
-                        .addComponent(btnCustomerCheckOut))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
-                        .addComponent(btnCustomerDetailsBill)))
-                .addContainerGap(129, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(btnExit)
-                .addGap(81, 81, 81)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnManageRoom)
-                    .addComponent(btnCustomerCheckIn)
-                    .addComponent(btnCustomerCheckOut))
-                .addGap(117, 117, 117)
-                .addComponent(btnCustomerDetailsBill)
-                .addContainerGap(244, Short.MAX_VALUE))
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asmz\\OneDrive\\Documents\\NetBeansProjects\\AppointmentTrackingHotelDB\\src\\main\\java\\Images\\background .jpg")); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, 590));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -138,6 +129,11 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         new CustomerCheckOut().setVisible(true);
     }//GEN-LAST:event_btnCustomerCheckOutActionPerformed
+
+    private void btnManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageCustomerActionPerformed
+        // TODO add your handling code here:
+        new ManageCustomer().setVisible(true);
+    }//GEN-LAST:event_btnManageCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,8 +174,10 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomerCheckIn;
     private javax.swing.JButton btnCustomerCheckOut;
-    private javax.swing.JButton btnCustomerDetailsBill;
     private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnManageCustomer;
     private javax.swing.JButton btnManageRoom;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

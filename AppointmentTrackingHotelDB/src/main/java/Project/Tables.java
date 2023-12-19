@@ -25,9 +25,58 @@ public class Tables {
         try {
             con = ConnectionProvider.getCon();
             st = con.createStatement();
-            //st.executeUpdate("create table users (name varchar(200), email varchar(200), address varchar(200))");
-            //st.executeUpdate("create table room (roomNo varchar (200), roomType varchar (200), bed varchar(200), price int , status varchar(200))");
-            //st.executeUpdate("CREATE TABLE customer (id INT, name VARCHAR(200), mobileNumber VARCHAR(10), nationality VARCHAR(200), gender VARCHAR(50), email VARCHAR(200), passport VARCHAR(200), address VARCHAR(500), checkIn VARCHAR(50), roomNo VARCHAR(10), bed VARCHAR(200), roomType VARCHAR(200), pricePerDay INT, totalAmount VARCHAR(200), checkout VARCHAR(50))");
+
+            // Create the CUSTOMER table
+            /*st.executeUpdate("CREATE TABLE CUSTOMER ("
+                    + "id INT PRIMARY KEY,"
+                    + "name VARCHAR(200) NOT NULL,"
+                    + "mobileNumber VARCHAR(10) NOT NULL,"
+                    + "nationality VARCHAR(200),"
+                    + "gender VARCHAR(50),"
+                    + "email VARCHAR(200) UNIQUE,"
+                    + "passport VARCHAR(200),"
+                    + "address VARCHAR(500),"
+                    + "checkIn VARCHAR(50),"
+                    + "roomNo VARCHAR(10),"
+                    + "bed VARCHAR(200),"
+                    + "roomType VARCHAR(200),"
+                    + "pricePerDay INT,"
+                    + "totalAmount VARCHAR(200),"
+                    + "checkout VARCHAR(50)"
+                    + ")");
+            st.executeUpdate("CREATE TABLE ROOM ("
+                    + "roomNo VARCHAR(200) PRIMARY KEY,"
+                    + "roomType VARCHAR(200),"
+                    + "bed VARCHAR(200),"
+                    + "price INT,"
+                    + "status VARCHAR(200)"
+                    + ")");
+
+            st.executeUpdate("CREATE TABLE APPOINTMENT ("
+                    + "id INT PRIMARY KEY,"
+                    + "customerId INT,"
+                    + "appointmentDate VARCHAR(50),"
+                    + "startTime VARCHAR(50),"
+                    + "endTime VARCHAR(50)"
+                    + ")");
+            
+            
+
+            // Create the index on the name column
+            st.executeUpdate("CREATE INDEX idx_customer_name ON CUSTOMER (name)");
+            st.executeUpdate("CREATE INDEX idx_room_roomNo ON ROOM (roomNo)");
+            st.executeUpdate("CREATE INDEX idx_appointment_customerId ON APPOINTMENT (customerId)");*/
+            
+             st.executeUpdate("CREATE TABLE APPOINTMENT ("
+                    + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                    + "customerId INT,"
+                    + "appointmentDate VARCHAR(50),"
+                    + "startTime VARCHAR(50),"
+                    + "endTime VARCHAR(50)"
+                    + ")");
+            
+            
+
             JOptionPane.showMessageDialog(null, "Table created successfully");
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, e);

@@ -10,6 +10,7 @@ package Project;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,6 +33,18 @@ public class Select {
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
             return null;
+        }
+    }
+    
+    public static void setData(PreparedStatement pstmt, String msg) {
+        try {
+            pstmt.executeUpdate();
+
+            if (!msg.equals("")) {
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 }
